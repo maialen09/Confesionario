@@ -19,3 +19,6 @@ services:
     volumes:
       - basedatos:/var/lib/mysql
       - ./realdatabase.sql:/docker-entrypoint-initdb.d/database.sql
+
+volumes:
+  basedatos:
