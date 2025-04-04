@@ -1,0 +1,22 @@
+body{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+h1{
+    text-align: center;
+}
+
+.botones{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 50%;
+    align-items: center;
+    
+
+}
+
+
+
