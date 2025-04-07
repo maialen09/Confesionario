@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Asignar el evento de clic al botón
     btnIr.addEventListener("click", function() {
       // Cambiar a otra página cuando el botón sea clickeado
-      window.location.href = "registro.html"; // Redirige a otra página
+      window.location.href = `/registro`; // Redirige a otra página
       // O si prefieres abrir en una nueva ventana:
       // window.open("otra_pagina.html", "_blank");
     });
