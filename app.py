@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 import mysql.connector
 
 app = Flask(__name__)
@@ -13,13 +13,13 @@ db_config = {
 
 def anadir_usuario(user, contrasena):
     with mysql.connector.connect(**db_config) as conn:
-        cursor.conn.cursor()
+        cursor = conn.cursor()
         query = "SELECT COUNT(*) FROM Usuarios WHERE nombre = %s"
         cursor.execute(query, (user,))
         count = cursor.fetchone()[0]
         if(count == 0):
             query = "INSERT INTO Usuarios(nombre, contrasena) VALUES(%s, %s)"
-            cursor.execute(query, (nombre, contrasena))
+            cursor.execute(query, (user, contrasena))
             conn.commit()
             return True
         else:
@@ -29,7 +29,12 @@ def anadir_usuario(user, contrasena):
 def index():
     return render_template('main.html')  # Esto buscará el archivo en /templates/index.html
 
-@app.route('/insertar_usuario')
+@app.route('/registro')
+def registro():
+    return render_template('registro.html')
+
+
+@app.route('/insertar_usuario', methods=['POST'])
 def insertar_usuario():
     user = request.json['user']
     contrasena = request.json['contrasena']
