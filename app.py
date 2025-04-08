@@ -94,6 +94,15 @@ def insertar_confesiones_falsas():
         cursor.executemany(query, confesiones)
         conn.commit()
 
+def obtener_confesiones():
+    with mysql.connector.connect(**db_config) as conn:
+        cursor = conn.cursor()
+        query = "SELECT usuario, texto FROM Confesiones"
+        cursor.execute(query)
+        datos = cursor.fetchall()
+        return datos
+
+
 @app.route('/')
 def index():
     return render_template('main.html')  # Esto buscará el archivo en /templates/index.html
@@ -109,7 +118,8 @@ def registro():
 @app.route('/home')
 def home():
     ##insertar_confesiones_falsas()
-    return render_template('home.html')
+    confesiones = obtener_confesiones()
+    return render_template('home.html', confesioness = confesiones)
 
 @app.route('/insertar_usuario', methods=['POST'])
 def insertar_usuario():
