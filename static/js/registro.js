@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       else {
         const longitudValidaCon = contrasena.length >= 8 && contrasena.length < 100;
-        const longitudValidaUsuario = user.length >= 8 && user.length < 100;
+        const longitudValidaUsuario = user.length >= 3 && user.length < 100;
         const tieneMayus = /[A-Z]/.test(contrasena);
         const tieneNum = /\d/.test(contrasena);
 
