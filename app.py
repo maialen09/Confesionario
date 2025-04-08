@@ -24,6 +24,16 @@ def anadir_usuario(user, contrasena):
             return False
         else:
             return True
+        
+
+def obtener_usuarios_y_contrasenas():
+    with mysql.connector.connect(**db_config) as conn:
+        cursor = conn.cursor()
+        query = "SELECT nombre, contrasena FROM Usuarios"
+        cursor.execute(query)
+        datos = cursor.fetchall()
+        return datos
+
 
 @app.route('/')
 def index():
@@ -48,6 +58,27 @@ def insertar_usuario():
     existe = anadir_usuario(user, contrasena)
     return jsonify({"existe": existe})
 
+@app.route('/comprobar_usuario', methods= ['POST'])
+def comprobar_usuario():
+    user = request.json['user']
+    contrasena = request.json['contrasena']
+    ### comprobar si ese usuario existe
+    ## comprobar si la contrseña está bien 
+    usuarios = obtener_usuarios_y_contrasenas()
+
+    
+     
+    for usuario in usuarios: 
+       nombre = usuario[0]
+       contrasenaNueva = usuario[1]
+     
+       if (nombre == user):
+           if (contrasena == contrasenaNueva):
+               return jsonify({"success": True, "message": "Usuario y contraseña correctos", "datos": usuario})
+           else:
+               return jsonify({"success": False, "message": "Contraseña incorrecta", "datos": usuario})
+        
+    return jsonify({"success": False, "message": "El usuario no existe", "datos": usuarios})       
 
 
 if __name__ == '__main__':
