@@ -40,11 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const user = textoUsuario.value.trim(); 
       const contrasena = textoContrasena.value.trim(); 
 
+      let errores = [];
       if (!user) {  
+        errores.push("usuario vacio")
         alert("El nombre de usuario está vacío o contiene solo espacios.");
       }
 
-      if (!contrasena) {  
+      if (!contrasena) { 
+        errores.push("contrasena vacio") 
         alert("La contraseña está vacía o contiene solo espacios.");
       }
       else {
@@ -54,41 +57,46 @@ document.addEventListener("DOMContentLoaded", () => {
         const tieneNum = /\d/.test(contrasena);
 
         if(!tieneNum){
+          errores.push("falta numero")
           alert("Falta número");
         }
         if(!tieneMayus){
+          errores.push("falta mayuscula")
           alert("Falta mayuscula");
         }
         if(!longitudValidaCon){
+          errores.push("longitud incorrecta de contrasena")
           alert("Pon una contraseña de entre 8 y 100 caracteres");
         }
         if(!longitudValidaUsuario){
+          errores.push("longitud incorrecta de usuario")
           alert("Pon un usuario de entre 8 y 100 caracteres");
         }
         if(!coincide){
+          errores.push("las contrasenas no coinciden")
           alert("Las contraseñas no coinciden idiota");
         }
+
       }
 
-      fetch('/insertar_usuario', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ user: user, contrasena: contrasena})
-      })
-      .then(response => response.json())
-      .then(data => {
-        const existe = data.existe;
-        console.log("El usuario " + existe)
-      })
-      .catch(error => console.error('Error al obtener el nombre de usuario'))
+      if(errores.length == 0){
+        fetch('/insertar_usuario', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ user: user, contrasena: contrasena})
+        })
+        .then(response => response.json())
+        .then(data => {
+          const existe = data.existe;
+          console.log("El usuario " + existe)
+        })
+        .catch(error => console.error('Error al obtener el nombre de usuario'))
+      }
 
 
-      
-
-
-
+   
 
     });
   });  
