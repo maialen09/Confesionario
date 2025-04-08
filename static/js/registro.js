@@ -90,6 +90,12 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(response => response.json())
         .then(data => {
           const existe = data.existe;
+          if(existe){
+            alert('El usuario ya existe, elige otro')
+          }
+          else{
+            window.location.href = `/home`; // Redirige a otra página
+          }
           console.log("El usuario " + existe)
         })
         .catch(error => console.error('Error al obtener el nombre de usuario'))

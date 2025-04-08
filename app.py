@@ -21,18 +21,25 @@ def anadir_usuario(user, contrasena):
             query = "INSERT INTO Usuarios(nombre, contrasena) VALUES(%s, %s)"
             cursor.execute(query, (user, contrasena))
             conn.commit()
-            return True
-        else:
             return False
+        else:
+            return True
 
 @app.route('/')
 def index():
     return render_template('main.html')  # Esto buscará el archivo en /templates/index.html
 
+@app.route('/inicio_de_sesion')
+def inicio_de_sesion():
+    return render_template('inicio_de_sesion.html')
+
 @app.route('/registro')
 def registro():
     return render_template('registro.html')
 
+@app.route('/home')
+def home():
+    return render_template('home.html')
 
 @app.route('/insertar_usuario', methods=['POST'])
 def insertar_usuario():
