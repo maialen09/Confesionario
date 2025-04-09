@@ -121,6 +121,14 @@ def home():
     confesiones = obtener_confesiones()
     return render_template('home.html', confesioness = confesiones)
 
+@app.route('/crear_confesion')
+def crear_confesion():
+    return render_template('crear_confesion.html')
+
+@app.route('/conectar')
+def conectar():
+    return render_template('conectar.html')
+
 @app.route('/insertar_usuario', methods=['POST'])
 def insertar_usuario():
     user = request.json['user']
@@ -135,8 +143,6 @@ def comprobar_usuario():
     ### comprobar si ese usuario existe
     ## comprobar si la contrseña está bien 
     usuarios = obtener_usuarios_y_contrasenas()
-
-    
      
     for usuario in usuarios: 
        nombre = usuario[0]
