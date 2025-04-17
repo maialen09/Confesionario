@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS Usuarios (
 
 CREATE TABLE IF NOT EXISTS Confesiones (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(70),
     usuario VARCHAR(100),
     texto TEXT
 );
