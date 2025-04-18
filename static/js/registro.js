@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alert('El usuario ya existe, elige otro')
           }
           else{
-            window.location.href = `/home`; // Redirige a otra página
+            window.location.href = `/inicio_de_sesion`; // Redirige a otra página
           }
           console.log("El usuario " + existe)
         })

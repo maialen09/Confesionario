@@ -1,7 +1,12 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session
+from flask_session import Session
 import mysql.connector
 
 app = Flask(__name__)
+
+app.secret_key = 'mi_clave_secreta_super_segura'
+app.config['SESSION_TYPE'] = 'filesystem'
+Session(app)
 
 db_config = {
     'user': 'admin',
@@ -120,7 +125,7 @@ def registro():
 def home():
     insertar_confesiones_falsas()
     confesiones = obtener_confesiones()
-    return render_template('home.html', confesioness = confesiones)
+    return render_template('home.html', confesioness = confesiones, usuario = session.get('usuario'))
 
 @app.route('/crear_confesion')
 def crear_confesion():
@@ -151,6 +156,7 @@ def comprobar_usuario():
      
        if (nombre == user):
            if (contrasena == contrasenaNueva):
+               session['usuario'] = user
                return jsonify({"success": True, "message": "Usuario y contraseña correctos", "datos": usuario})
            else:
                return jsonify({"success": False, "message": "Contraseña incorrecta", "datos": usuario})
@@ -158,6 +164,10 @@ def comprobar_usuario():
     return jsonify({"success": False, "message": "El usuario no existe", "datos": usuarios})       
 
 
-if __name__ == '__main__':
+@app.route('/insertar_confesion', methods= ['POST'])
+def insertar_confesion():
+
+
+ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 
