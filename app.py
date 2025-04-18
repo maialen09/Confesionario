@@ -32,6 +32,7 @@ def anadir_usuario(user, contrasena):
 
 def anadir_confesion(titulo, confesion):
     with mysql.connector.connect(**db_config) as conn:
+        cursor = conn.cursor()
         query = "INSERT INTO Confesiones(titulo, usuario, texto) VALUES(%s, %s, %s)"
         cursor.execute(query, (titulo, session.get('usuario'), confesion))
         conn.commit()
