@@ -29,6 +29,13 @@ def anadir_usuario(user, contrasena):
             return False
         else:
             return True
+
+def anadir_confesion(titulo, confesion):
+    with mysql.connector.connect(**db_config) as conn:
+        query = "INSERT INTO Confesiones(titulo, usuario, texto) VALUES(%s, %s, %s)"
+        cursor.execute(query, (titulo, session.get('usuario'), confesion))
+        conn.commit()
+        return True
         
 
 def obtener_usuarios_y_contrasenas():
@@ -108,7 +115,6 @@ def obtener_confesiones():
         datos = cursor.fetchall()
         return datos
 
-
 @app.route('/')
 def index():
     return render_template('main.html')  # Esto buscará el archivo en /templates/index.html
@@ -123,7 +129,7 @@ def registro():
 
 @app.route('/home')
 def home():
-    insertar_confesiones_falsas()
+    #### insertar_confesiones_falsas() # Comentar esto
     confesiones = obtener_confesiones()
     return render_template('home.html', confesioness = confesiones, usuario = session.get('usuario'))
 
@@ -140,6 +146,13 @@ def insertar_usuario():
     user = request.json['user']
     contrasena = request.json['contrasena']
     existe = anadir_usuario(user, contrasena)
+    return jsonify({"existe": existe})
+
+@app.route('/insertar_confesion', methods=['POST'])
+def insertar_confesion():
+    titulo = request.json['title']
+    confesion = request.json['conf']
+    existe = anadir_confesion(titulo, confesion)
     return jsonify({"existe": existe})
 
 @app.route('/comprobar_usuario', methods= ['POST'])
@@ -161,13 +174,8 @@ def comprobar_usuario():
            else:
                return jsonify({"success": False, "message": "Contraseña incorrecta", "datos": usuario})
         
-    return jsonify({"success": False, "message": "El usuario no existe", "datos": usuarios})       
+    return jsonify({"success": False, "message": "El usuario no existe", "datos": usuarios})      
 
-
-@app.route('/insertar_confesion', methods= ['POST'])
-def insertar_confesion():
-
-
- if __name__ == '__main__':
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 
