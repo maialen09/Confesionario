@@ -111,7 +111,7 @@ def insertar_confesiones_falsas():
 def obtener_confesiones():
     with mysql.connector.connect(**db_config) as conn:
         cursor = conn.cursor()
-        query = "SELECT usuario, titulo, texto FROM Confesiones"
+        query = "SELECT usuario, titulo, texto, id FROM Confesiones"
         cursor.execute(query)
         datos = cursor.fetchall()
         return datos

@@ -19,8 +19,12 @@
         <ul>
             {% for confesion in confesioness %}
 
-            <li><strong>{{ confesion[0] }}</strong>: {{ confesion[1] }}</li>
-
+            <li>
+                <a href="{{ url_for('ver_confesion', id=confesion[3]) }}">
+                  <strong>{{ confesion[0] }}</strong>: {{ confesion[1] }}
+                </a>
+            </li>
+              
             {% endfor %}
         </ul>
     </div>
