@@ -3,7 +3,7 @@ const botonAnadir = document.getElementById("btnAnadir");
 const botonLike = document.getElementById("btnLike");
 const textArea = document.getElementById("comentario_nuevo");
 const id = document.getElementById("titulo").dataset.id;
-const comment_id = document.getElementById("btnLike").dataset.id_coment;
+const likeButtons = document.querySelectorAll('.like-button');
 
 console.log("Id:", id);
 
@@ -46,20 +46,30 @@ botonAnadir.addEventListener("click", function(){
 
 }); 
 
-botonLike.addEventListener("click", function(){
-  fetch('/incrementar_like', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ idComentario: comment_id})
-  })
-  .then(response => response.json())
-  .then(data => {
-    const resultado = data.resultado;
-    if(resultado){
-      window.location.reload();
-    }
-  })
-  .catch(error => console.error('Error al intentar dar like'))
-})
+
+likeButtons.forEach(button => {
+  const comment_id = button.dataset.id_coment;
+  
+  console.log(comment_id);  // Esto debería imprimir el ID de cada comentario en la consola
+
+  // Añadir el evento de like al botón
+  button.addEventListener('click', function() {
+
+    fetch('/incrementar_like', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ idComentario: comment_id})
+    })
+    .then(response => response.json())
+    .then(data => {
+      const resultado = data.resultado;
+      if(resultado){
+        window.location.reload();
+      }
+    })
+    .catch(error => console.error('Error al intentar dar like'))
+    
+  });
+});

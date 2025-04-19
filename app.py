@@ -64,14 +64,13 @@ def insertar_comentarios(textoComentario,idConfesion,usuario):
         return True
     
 
-def sumar_like(id_comentario): 
+def sumar_like(usuario,comentario_id): 
     with mysql.connector.connect(**db_config) as conn:
         cursor = conn.cursor()
-        query = "UPDATE Comentarios SET likes = likes+1 WHERE id = %s"
-        cursor.execute(query, (id_comentario,))
+        query = "INSERT INTO Likes(usuario, comentario_id) VALUES (%s,%s)"
+        cursor.execute(query, (usuario, comentario_id))
         conn.commit()
         return True
-
     
 
 def insertar_confesiones_falsas():
@@ -142,14 +141,38 @@ def obtener_confesiones():
         cursor.execute(query)
         datos = cursor.fetchall()
         return datos
+    
+def obtener_confesiones_usuario(usuario):
+    with mysql.connector.connect(**db_config) as conn:
+        cursor = conn.cursor()
+        query = "SELECT titulo,texto,id FROM Confesiones WHERE usuario= %s"
+        cursor.execute(query, (usuario,))
+        datos = cursor.fetchall()
+        return datos
+
+
+    
 
 def obtener_comentarios(id_confesion):
     with mysql.connector.connect(**db_config) as conn:
         cursor = conn.cursor()
-        query = "SELECT usuario, texto, likes, id FROM Comentarios WHERE id_confesion=%s"
+        query = """
+        SELECT 
+            c.usuario, 
+            c.texto, 
+            c.id, 
+            (
+                SELECT COUNT(*) 
+                FROM Likes l 
+                WHERE l.comentario_id = c.id
+            ) AS num_likes
+        FROM Comentarios c
+        WHERE c.id_confesion = %s
+        """
         cursor.execute(query, (id_confesion,))
         datos = cursor.fetchall()
         return datos
+
 
 @app.route('/')
 def index():
@@ -177,6 +200,12 @@ def crear_confesion():
 def conectar():
     return render_template('conectar.html')
     
+
+@app.route('/mis_confesiones')
+def mis_confesiones():
+    confesiones = obtener_confesiones_usuario(session.get('usuario'))
+    return render_template('mis_confesiones.html', confesiones=confesiones)
+
 @app.route('/confesion/<int:id>')
 def ver_confesion(id):
     datos = obtener_confesion_por_id(id)
@@ -209,7 +238,7 @@ def insertar_comentario():
 @app.route('/incrementar_like', methods=['POST'])
 def incrementar_like():
     idComentario = request.json['idComentario']
-    resultado = sumar_like(idComentario)
+    resultado = sumar_like(session.get('usuario'), idComentario)
     return jsonify({"resultado": resultado})
 
 

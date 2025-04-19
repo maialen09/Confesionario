@@ -14,15 +14,24 @@ CREATE TABLE IF NOT EXISTS Confesiones (
     titulo VARCHAR(70),
     usuario VARCHAR(100),
     texto TEXT, 
-    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario) REFERENCES Usuarios(nombre)
 );
 
 CREATE TABLE IF NOT EXISTS Comentarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_confesion INT,
-    usuario VARCHAR(100),
+    usuario VARCHAR(50),
     texto TEXT,
-    likes INT DEFAULT 0
-); 
+    FOREIGN KEY (id_confesion) REFERENCES Confesiones(id)
+);
 
-    
+CREATE TABLE IF NOT EXISTS Likes(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(50) NOT NULL,
+    comentario_id INT NOT NULL,
+    fecha TIMESTAMP DEFAULT NOW(),
+    UNIQUE(usuario, comentario_id), 
+    FOREIGN KEY (usuario) REFERENCES Usuarios(nombre),
+    FOREIGN KEY (comentario_id) REFERENCES Comentarios(id)
+);  

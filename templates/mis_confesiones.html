@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Confesiones</title>
+</head>
+<body>
+    <h1> MIS CONFESIONES </h1>
+
+    <ul>
+        {% for confesion in confesiones %}
+
+        <li>
+            <strong> Titulo: </strong> {{confesion[0]}}
+            <strong>Texto: </strong>  {{confesion[1]}}
+                
+        </li>
+          
+        {% endfor %}
+    </ul>
+
+
+    
+</body>
+</html>

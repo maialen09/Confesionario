@@ -19,7 +19,7 @@
     <label for="comentario_nuevo"> Introduce tu comentario sobre la confesión: </label>
     <textarea name="comentario_nuevo" id="comentario_nuevo" cols="100" rows="10"></textarea>
 
-    <button id="btnAnadir">Añadir Comentario</button>
+    <button id="btnAnadir">Añadir Comentarioo</button>
 
     
     <div class="comentarios">
@@ -27,8 +27,11 @@
             {% for comentario in comments %}
 
             <li>
-                  <strong>{{ comentario[0] }}</strong>: {{ comentario[1] }}
-                  <button data-id_coment="{{ comentario[3]}}" id="btnLike" class="like-button" aria-label="LikeButton"><i class="fa-solid fa-thumbs-up"></i></button>{{comentario[2]}} 
+                  <strong>{{ comentario[0] }}:</strong> {{ comentario[1] }}
+                  <button data-id_coment="{{ comentario[2]}}" class="like-button" aria-label="LikeButton">
+                    <i class="fa-solid fa-thumbs-up"></i>
+                  </button>{{ comentario[3] }}  
+                  
             </li>
               
             {% endfor %}
