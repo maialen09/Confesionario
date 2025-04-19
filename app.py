@@ -54,7 +54,6 @@ def obtener_confesion_por_id(id):
         cursor.execute(query, (id,))
         datos = cursor.fetchall()
         return datos
-
     
 
 def insertar_confesiones_falsas():

@@ -13,7 +13,16 @@ CREATE TABLE IF NOT EXISTS Confesiones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(70),
     usuario VARCHAR(100),
-    texto TEXT
+    texto TEXT, 
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS Comentarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_confesion INT,
+    usuario VARCHAR(100),
+    texto TEXT,
+    likes INT
+); 
 
     
