@@ -141,6 +141,12 @@ def crear_confesion():
 @app.route('/conectar')
 def conectar():
     return render_template('conectar.html')
+    
+@app.route('/confesion/<int:id>')
+def ver_confesion(id):
+    texto = obtener_confesion_por_id(id)
+    return render_template('confesion.html', id=id)
+
 
 @app.route('/insertar_usuario', methods=['POST'])
 def insertar_usuario():
