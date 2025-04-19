@@ -8,10 +8,42 @@
     <title>Confesión #{{ id }}</title></head>
 <body>
     <button aria-label="Volver" id="btnVolver"><i class="fa-solid fa-arrow-left"></i></button>
-    <h1> Titulo de la confesion {{ datos[0][0] }} </h1>
-    <h3> Texto de la confesion {{ datos[0][1]}}</h3>
-    <h4> Usuario de la confesion {{ datos[0][2] }}</h4>
+    <h1 id="titulo" data-id="{{id}}">{{ datos[0][0] }} </h1>
+    <h3 id="texto">{{ datos[0][1]}}</h3>
+    <h4 id="usuario"> {{ datos[0][2] }}</h4>
+
+<hr>
+
+    <h2> Comentarios</h2>
+     
+    <label for="comentario_nuevo"> Introduce tu comentario sobre la confesión: </label>
+    <textarea name="comentario_nuevo" id="comentario_nuevo" cols="100" rows="10"></textarea>
+
+    <button id="btnAnadir">Añadir Comentario</button>
+
+
+
+
+    
+    
+    <div class="comentarios">
+        <ul>
+            {% for comentario in comments %}
+
+            <li>
+                  <strong>{{ comentario[0] }}</strong>: {{ comentario[1] }}
+                  <strong>Likes: {{comentario[2]}}</strong>
+            </li>
+              
+            {% endfor %}
+        </ul>
+    </div>
+
+
+
+
 
     <script src="../static/js/confesion.js"></script>
+    
 </body>
 </html>

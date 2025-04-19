@@ -55,6 +55,14 @@ def obtener_confesion_por_id(id):
         datos = cursor.fetchall()
         return datos
     
+def insertar_comentarios(textoComentario,idConfesion,usuario):
+    with mysql.connector.connect(**db_config) as conn:
+        cursor = conn.cursor()
+        query = "INSERT INTO Comentarios(id_confesion,usuario,texto) VALUES (%s, %s, %s)"
+        cursor.execute(query, (idConfesion,usuario,textoComentario))
+        conn.commit()
+        return True
+    
 
 def insertar_confesiones_falsas():
     confesiones = [
@@ -125,6 +133,14 @@ def obtener_confesiones():
         datos = cursor.fetchall()
         return datos
 
+def obtener_comentarios(id_confesion):
+    with mysql.connector.connect(**db_config) as conn:
+        cursor = conn.cursor()
+        query = "SELECT usuario, texto, likes, id FROM Comentarios WHERE id_confesion=%s"
+        cursor.execute(query, (id_confesion,))
+        datos = cursor.fetchall()
+        return datos
+
 @app.route('/')
 def index():
     return render_template('main.html')  # Esto buscará el archivo en /templates/index.html
@@ -154,7 +170,8 @@ def conectar():
 @app.route('/confesion/<int:id>')
 def ver_confesion(id):
     datos = obtener_confesion_por_id(id)
-    return render_template('confesion.html', id=id, datos=datos)
+    comments = obtener_comentarios(id)
+    return render_template('confesion.html', id=id, datos=datos, comments=comments)
 
 
 @app.route('/insertar_usuario', methods=['POST'])
@@ -170,6 +187,16 @@ def insertar_confesion():
     confesion = request.json['conf']
     existe = anadir_confesion(titulo, confesion)
     return jsonify({"existe": existe})
+
+@app.route('/insertar_comentario', methods=['POST'])
+def insertar_comentario():
+    textoComentario = request.json['textoComentario']
+    idConfesion = request.json['idConfesion']
+    resultado = insertar_comentarios(textoComentario,idConfesion, session.get('usuario'))
+    return jsonify({"resultado": resultado})
+
+
+
 
 @app.route('/comprobar_usuario', methods= ['POST'])
 def comprobar_usuario():
