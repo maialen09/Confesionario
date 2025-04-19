@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Comentarios (
     id_confesion INT,
     usuario VARCHAR(100),
     texto TEXT,
-    likes INT
+    likes INT DEFAULT 0
 ); 
 
     

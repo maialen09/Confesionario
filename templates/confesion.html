@@ -21,10 +21,6 @@
 
     <button id="btnAnadir">Añadir Comentario</button>
 
-
-
-
-    
     
     <div class="comentarios">
         <ul>
@@ -32,17 +28,14 @@
 
             <li>
                   <strong>{{ comentario[0] }}</strong>: {{ comentario[1] }}
-                  <strong>Likes: {{comentario[2]}}</strong>
+                  <button data-id_coment="{{ comentario[3]}}" id="btnLike" class="like-button" aria-label="LikeButton"><i class="fa-solid fa-thumbs-up"></i></button>{{comentario[2]}} 
             </li>
               
             {% endfor %}
         </ul>
     </div>
 
-
-
-
-
+    
     <script src="../static/js/confesion.js"></script>
     
 </body>

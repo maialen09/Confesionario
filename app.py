@@ -64,6 +64,16 @@ def insertar_comentarios(textoComentario,idConfesion,usuario):
         return True
     
 
+def sumar_like(id_comentario): 
+    with mysql.connector.connect(**db_config) as conn:
+        cursor = conn.cursor()
+        query = "UPDATE Comentarios SET likes = likes+1 WHERE id = %s"
+        cursor.execute(query, (id_comentario,))
+        conn.commit()
+        return True
+
+    
+
 def insertar_confesiones_falsas():
     confesiones = [
         ('anonimo1', 'Confesión pizzera', 'Me comí la última porción de pizza y culpé a mi hermano.'),
@@ -195,6 +205,12 @@ def insertar_comentario():
     resultado = insertar_comentarios(textoComentario,idConfesion, session.get('usuario'))
     return jsonify({"resultado": resultado})
 
+
+@app.route('/incrementar_like', methods=['POST'])
+def incrementar_like():
+    idComentario = request.json['idComentario']
+    resultado = sumar_like(idComentario)
+    return jsonify({"resultado": resultado})
 
 
 
