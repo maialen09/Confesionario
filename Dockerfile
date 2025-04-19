@@ -1,8 +1,8 @@
 # Usa una imagen base ligera con Python
-FROM python:3-alpine
+FROM python:3.11-slim
 
 # Instala dependencias necesarias para Flask y el reloader
-RUN apk add --no-cache build-base libffi-dev
+RUN apt-get update && apt-get install -y build-essential libffi-dev && rm -rf /var/lib/apt/lists/*
 
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
