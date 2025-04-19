@@ -47,6 +47,16 @@ def obtener_usuarios_y_contrasenas():
         datos = cursor.fetchall()
         return datos
 
+def obtener_confesion_por_id(id):
+    with mysql.connector.connect(**db_config) as conn:
+        cursor = conn.cursor()
+        query = "SELECT titulo, texto, usuario FROM Confesiones WHERE id=%s"
+        cursor.execute(query, (id,))
+        datos = cursor.fetchall()
+        return datos
+
+    
+
 def insertar_confesiones_falsas():
     confesiones = [
         ('anonimo1', 'Confesión pizzera', 'Me comí la última porción de pizza y culpé a mi hermano.'),
@@ -144,8 +154,8 @@ def conectar():
     
 @app.route('/confesion/<int:id>')
 def ver_confesion(id):
-    texto = obtener_confesion_por_id(id)
-    return render_template('confesion.html', id=id)
+    datos = obtener_confesion_por_id(id)
+    return render_template('confesion.html', id=id, datos=datos)
 
 
 @app.route('/insertar_usuario', methods=['POST'])
