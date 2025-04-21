@@ -4,4 +4,56 @@ body{
     justify-content: center;
     align-items: center;
     gap: 20px;
+
+
+    background-image: url('../images/oki\(1\).jpg');
+
+      /* Ajustes para que se vea bien */
+      background-size: cover;       /* Ajusta la imagen al tamaño del viewport */
+      background-repeat: no-repeat; /* No repetir la imagen */
+      background-position: center;  /* Centra la imagen */
+      height: 100vh;                /* Asegura que el body tenga altura completa */
+      margin: 0;       
+}
+
+h1{
+    font-size: 50px;
+}
+
+label{
+    color: white;
+    font-size: 20px;
+}
+
+button{
+    background-color: white;
+    border: 2px solid black;
+    width: 180px;
+    height: 40px;
+
+
+}
+
+#btnVolver {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#btnVolver:hover {
+    background-color: #2980b9;
+    transform: scale(1.1);
+}
+
+#btnVolver i {
+    pointer-events: none; /* para que solo el botón reciba el click */
 }
