@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tituloConfesion = document.getElementById("titulo");
     const textoConfesion = document.getElementById("cuerpo");
 
-   
+
 
     btnPublicar.addEventListener("click", function() {
 
@@ -54,4 +54,44 @@ document.addEventListener("DOMContentLoaded", () => {
           .catch(error => console.error('Error al obtener el nombre de usuario'))
         }
     });
+
+    document.getElementById("btnConectar").addEventListener("click", function() {
+      const titulo = document.getElementById("titulo").value.trim();
+      const confesion = document.getElementById("cuerpo").value.trim();
+      let errores = [];
+        if (!titulo) {  
+          errores.push("El titulo vacio")
+          alert("El Titulo está vacío o contiene solo espacios.");
+        }
+        else{
+          const longitudValidaTitulo = titulo.length >= 5 && titulo.length < 70;
+          if(!longitudValidaTitulo){
+              errores.push("longitud incorrecta de titulo")
+              alert("Pon un titulo de entre 5 y 70 caracteres");
+          }
+        }
+        if (!confesion) { 
+          errores.push("Confesion vacio") 
+          alert("La confesion está vacía o contiene solo espacios."); 
+        }
+        else{
+          const longitudValidaConfesion = confesion.length >= 50 && confesion.length < 10000;
+          if(!longitudValidaConfesion){
+              errores.push("longitud incorrecta de confesion")
+              alert("Pon una confesion de entre 50 y 10000 caracteres");
+          }
+        }
+
+        if(errores.length == 0){
+      
+          // Codificamos los valores para que se puedan pasar por la URL sin problemas
+          const encodedTitulo = encodeURIComponent(titulo);
+          const encodedTexto = encodeURIComponent(confesion);
+      
+          // Redirigimos al endpoint del backend con los valores como parámetros
+          window.location.href = `/conectar_usuario?titulo=${encodedTitulo}&texto=${encodedTexto}`;
+        }
+      });
+
 });
+

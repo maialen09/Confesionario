@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, session
 from flask_session import Session
+from flask_socketio import SocketIO, emit, join_room, leave_room
 import mysql.connector
 
 app = Flask(__name__)
@@ -7,6 +8,9 @@ app = Flask(__name__)
 app.secret_key = 'mi_clave_secreta_super_segura'
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
+
+socketio = SocketIO(app, manage_session=False)
+connected_users = {}
 
 db_config = {
     'user': 'admin',
@@ -241,6 +245,11 @@ def incrementar_like():
     resultado = sumar_like(session.get('usuario'), idComentario)
     return jsonify({"resultado": resultado})
 
+@app.route('/conectar_usuario')
+def conectar_usuario():
+    titulo = request.args.get('titulo')
+    texto = request.args.get('texto')
+    return render_template('conectar.html',titulo=titulo, texto=texto)
 
 
 @app.route('/comprobar_usuario', methods= ['POST'])
@@ -262,7 +271,20 @@ def comprobar_usuario():
            else:
                return jsonify({"success": False, "message": "Contraseña incorrecta", "datos": usuario})
         
-    return jsonify({"success": False, "message": "El usuario no existe", "datos": usuarios})      
+    return jsonify({"success": False, "message": "El usuario no existe", "datos": usuarios})   
+
+
+@socketio.on('connect')
+def handle_connect():
+    connected_users[request.sid] = session.get('usuario')
+    emit('usuarios_conectados', list(connected_users.values()), broadcast=True)
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    if request.sid in connected_users:
+        del connected_users[request.sid]
+    emit('usuarios_conectados', list(connected_users.values()), broadcast=True)
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)

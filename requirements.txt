@@ -2,4 +2,5 @@ requests
 flask
 watchdog
 flask_session
+flask_socketio
 mysql-connector-python

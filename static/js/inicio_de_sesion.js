@@ -37,7 +37,5 @@ btnInicio.addEventListener("click", function(){
       .catch(error => console.error('Error al comprobar la existencia del usuario'))
 
 
-
-
-
 })
+
