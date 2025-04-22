@@ -20,6 +20,8 @@ db_config = {
     'port': '3306'
 }
 
+## ---------------------------------------------FUNCIONES DE LA BASE DE DATOS----------------------------------------------------------------------------- #######
+
 def anadir_usuario(user, contrasena):
     with mysql.connector.connect(**db_config) as conn:
         cursor = conn.cursor()
@@ -176,7 +178,8 @@ def obtener_comentarios(id_confesion):
         cursor.execute(query, (id_confesion,))
         datos = cursor.fetchall()
         return datos
-
+    
+## -----------------------------------------RUTAS DE FLASK-------------------------------------------------------------------------------------------------- #######
 
 @app.route('/')
 def index():
@@ -245,6 +248,7 @@ def incrementar_like():
     resultado = sumar_like(session.get('usuario'), idComentario)
     return jsonify({"resultado": resultado})
 
+
 @app.route('/conectar_usuario')
 def conectar_usuario():
     titulo = request.args.get('titulo')
@@ -273,6 +277,7 @@ def comprobar_usuario():
         
     return jsonify({"success": False, "message": "El usuario no existe", "datos": usuarios})   
 
+## ---------------------------------------METODOS DEL SOCKET----------------------------------------------------------------------------------- #######
 
 @socketio.on('connect')
 def handle_connect():
